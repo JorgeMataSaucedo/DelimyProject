@@ -1,0 +1,8 @@
+{
+  "name": "Delimy",
+  "version": "1.0.0",
+  "description": "Cooking courses website API",
+  "main": "index.js",
+  "author": "Team #3",
+  "license": "MIT"
+}
