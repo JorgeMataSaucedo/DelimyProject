@@ -6,6 +6,7 @@ export function initialValues() {
         lastname: '',
         email: '',
         password: '',
+        repeatPassword: '',
     };
 }
 
@@ -15,5 +16,6 @@ export function validationSchema() {
         lastname: Yup.string().required('Required'),
         email: Yup.string().email('Invalid email').required('Required'),
         password: Yup.string().required('Required'),
+        repeatPassword: Yup.string().required('Required'),
     });
 }

@@ -31,11 +31,8 @@ const UserSchema = mongoose.Schema({
     role: {
         type: [String],
         default: ["Student"],
-        enum: ["Student", "Instructor","Editor", "Admin"]
+        enum: ["Student", "Instructor", "Admin"]
     },
-    stripe_account_id: "",
-    stripe_seller: {},
-    stripeSession: {},
     active: {
         type: Boolean,
         default: true

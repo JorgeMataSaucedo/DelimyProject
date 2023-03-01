@@ -36,6 +36,7 @@ export class Auth {
             const response = await fetch(url, params);
             const result = await response.json();
             if(response.status !== 200) throw new Error(result.message);
+            if(response.status == 404) alert("Usuario ya existe")
             return result;
 
         } catch (e) {

@@ -10,7 +10,10 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.0.16",
+    "@material-tailwind/react": "^1.4.2",
+    "@popperjs/core": "^2.11.6",
     "bcrypt": "^5.1.0",
+    "daisyui": "^2.51.2",
     "formik": "^2.2.9",
     "heroicons": "^2.0.16",
     "lodash": "^4.17.21",
