@@ -7,7 +7,7 @@ const image = require('../utils/image');
 
 const register = async (req, res) => {
     try{
-    const {firstname, lastname, email, password} = req.body;
+    const {firstname, lastname, email, password, role} = req.body;
     if (!firstname) return res.status(400).send("First name is required");
     if (!lastname) return res.status(400).send("Last name is required");
     if (!email) return res.status(400).send("Email is required");
@@ -23,10 +23,19 @@ const register = async (req, res) => {
                 firstname,
                 lastname,
                 email: email.toLowerCase(),
-                password: hashedPassword
+                password: hashedPassword,
+                role
 
             }
         );
+
+        if (req.files.picture) {
+            const imagePath = req.files.picture.path.replace(/\\/g, '/');
+            const imagePathWithoutUploads = imagePath.substring('uploads'.length + 1);
+            user.picture = imagePathWithoutUploads;
+            console.log(imagePathWithoutUploads);
+        }
+
         await user.save();
         console.log("REGISTERED SUCCESSFULLY");
         console.log(user);
@@ -37,49 +46,43 @@ const register = async (req, res) => {
     }
 }
 
-const login = async  (req, res) => {
+const login = async (req, res) => {
     try {
-        const {email, password} = req.body;
+        const { email, password } = req.body;
 
-        if (!email) res.status(400).send({msg: "El email es obligatorio"});
-        if (!password) res.status(400).send({msg: "La contraseña es obligatoria"});
+        if (!email) return res.status(400).send({ msg: "El email es obligatorio" });
+        if (!password) return res.status(400).send({ msg: "La contraseña es obligatoria" });
 
         const emailLowerCase = email.toLowerCase();
 
-        User.findOne({email: emailLowerCase}, (error, userStore) => {
+        User.findOne({ email: emailLowerCase }, (error, userStore) => {
             if (error) {
-                res.status(500).send({msg: "SEVER ERROR"});
+                return res.status(500).send({ msg: "SEVER ERROR" });
             } else if (!userStore) {
-                res.status(404).send({msg: "Usuario no encontrado"});
-                }else {
+                return res.status(404).send({ msg: "Usuario no encontrado" });
+            } else {
                 bcrypt.compare(password, userStore.password, (bcryptError, check) => {
                     if (bcryptError) {
-                        res.status(500).send({msg: "SEVER ERROR"});
+                        return res.status(500).send({ msg: "SEVER ERROR" });
                     } else if (!check) {
-                        res.status(400).send({msg: "Incorrect password"});
+                        return res.status(400).send({ msg: "Incorrect password" });
                     } else if (!userStore.active) {
-                        res.status(401).send({msg: "The user is not authorized or is not active"});
+                        return res.status(401).send({ msg: "The user is not authorized or is not active" });
                     } else {
-                        res.status(200).send({
+                        return res.status(200).send({
                             access: jwt.createAccessToken(userStore),
                             refresh: jwt.createRefreshToken(userStore),
-                            //userRoles: userStore.role[0],
-                            //userRole: userStore.role[0],
-                           // user: userStore
                         });
-                      //  res.status(200).send({user: userStore});
-
-
-
                     }
                 });
             }
         });
     } catch (err) {
-        console.log("LOGIN ERROR", err);
+        console.log("LOGIN ERROrR", err);
         return res.status(400).send("Error. Try again.");
     }
-}
+};
+
 
 const refreshToken = async (req, res) => {
     const {token} = req.body;
@@ -104,5 +107,5 @@ const refreshToken = async (req, res) => {
 module.exports = {
     register,
     login,
-    refreshToken
+    refreshToken,
 }

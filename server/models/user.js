@@ -33,6 +33,14 @@ const UserSchema = mongoose.Schema({
         default: ["Student"],
         enum: ["Student", "Instructor", "Admin"]
     },
+    description: {
+        type: String,
+        default: "No description"
+    },
+    curriculum: {
+        type: String,
+        default: "No curriculum"
+    },
     active: {
         type: Boolean,
         default: true

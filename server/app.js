@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const {API_VERSION} = require("./constants");
-
+//const {API_VERSION} = require("./constants");
+require("dotenv").config();
 const app = express();
 
 //Import routes
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 
 
 //Configure routes
-app.use(`/api/${API_VERSION}`, authRoutes);
-app.use(`/api/${API_VERSION}`, userRoutes);
+app.use(`/api/${process.env.API_VERSION}`, authRoutes);
+app.use(`/api/${process.env.API_VERSION}`, userRoutes);
 
 module.exports = app;
