@@ -96,6 +96,74 @@ api.post("/auth/register",[md_upload] , AuthController.register);
  *         description: Error interno del servidor
  */
 api.post("/auth/login", AuthController.login);
+
+
+/**
+ * Inicia sesión con las credenciales del usuario.
+ *
+ * @swagger
+ * tags:
+ *   name: Autenticación
+ * /api/v1/auth/loginB:
+ *   post:
+ *     summary: Inicia sesión con las credenciales del usuario.
+ *     tags: [Autenticación]
+ *     requestBody:
+ *       description: Objeto JSON que contiene las credenciales del usuario.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del usuario.
+ *                 example: usuario@ejemplo.com
+ *               password:
+ *                 type: string
+ *                 description: Contraseña del usuario.
+ *                 example: Contraseña123
+ *     responses:
+ *       '200':
+ *         description: Se ha iniciado sesión correctamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token de autenticación generado.
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDQ2NzhiYjNiNjczZTAwMTc1YWIxZjQiLCJpYXQiOjE1NjQ4OTQ4MTQsImV4cCI6MTU2NTUwMzYxNH0.6UQL0YU-v0vE-REhKBEgNlZLLs1sFvzKfwE1HbqbzKM
+ *                 user:
+ *                   type: object
+ *                   description: Objeto JSON que representa al usuario autenticado.
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       description: Identificador único del usuario.
+ *                       example: 5d4678bb3b673e00175ab1f4
+ *                     email:
+ *                       type: string
+ *                       description: Correo electrónico del usuario.
+ *                       example: usuario@ejemplo.com
+ *       '400':
+ *         description: No se pudo iniciar sesión debido a credenciales inválidas o algún otro error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de error que describe el problema.
+ *                   example: Credenciales inválidas.
+ */
+api.post("/auth/loginB", AuthController.loginB);
+
+api.get("/auth/logout", AuthController.logout);
+
 api.post("/auth/refreshAccessToken", AuthController.refreshToken);
 
 module.exports = api;

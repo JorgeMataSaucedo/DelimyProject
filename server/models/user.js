@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+const {Schema} = mongoose
+const {ObjectId} = Schema;
 
 const UserSchema = mongoose.Schema({
    firstname: {
@@ -44,7 +46,15 @@ const UserSchema = mongoose.Schema({
     active: {
         type: Boolean,
         default: true
-    }
+    },
+        stripe_account_id: "",
+        stripe_seller: {},
+        stripeSession: {},
+        passwordResetCode: {
+            data: String,
+            default: "",
+        },
+    courses: [{ type: ObjectId, ref: "Course" }],
 },
 { timestamps: true}
 );

@@ -1,8 +1,14 @@
+
 const User = require('../models/user');
-const { hashPassword } = require('../utils/auth');
+const { hashPassword, comparePassword } = require('../utils/auth');
 const jwt = require('../utils/jwt');
 const bcrypt = require('bcrypt');
 const image = require('../utils/image');
+const jwtk = require('jsonwebtoken');
+require("dotenv").config();
+
+
+
 
 
 const register = async (req, res) => {
@@ -83,6 +89,65 @@ const login = async (req, res) => {
     }
 };
 
+const loginB = async (req, res) => {
+    try{
+        const {email, password} = req.body;
+
+        const user = await User.findOne({email: email.toLowerCase()}).exec();
+
+        if(!user) return res.status(400).send("User not found");
+
+        const match = await comparePassword(password, user.password);
+
+        const token = jwtk.sign({_id: user._id}, process.env.JWT_SECRET_KEY, {expiresIn: '7d'});
+
+        user.password = undefined;
+
+        res.cookie('token', token, {
+            httpOnly: true,
+            //secure: true,
+        });
+
+        res.json({
+            token,
+            user
+
+        });
+
+
+
+    } catch (err){
+        console.log("LOGIN ERROR", err);
+        return res.status(400).send("Error. Try again.");
+    }
+
+}
+
+const logout = async (req, res) => {
+    try{
+        res.clearCookie('token');
+        res.json({
+            message: "Logout success"
+        });
+    } catch (err){
+        console.log("LOGOUT ERROR", err);
+    }
+};
+
+
+const currentUser = async (req, res) => {
+    try{
+        const user = await User.findById(req.user._id).select('-password').exec();
+        console.log("CURRENT USER", user);
+       return  res.json({
+            ok: true,
+            user
+        });
+    } catch (err){
+        console.log("CURRENT USER ERROR", err);
+    }
+};
+
 
 const refreshToken = async (req, res) => {
     const {token} = req.body;
@@ -108,4 +173,7 @@ module.exports = {
     register,
     login,
     refreshToken,
+    loginB,
+    logout,
+    currentUser
 }
