@@ -7,9 +7,16 @@ const image = require('../utils/image');
 const jwtk = require('jsonwebtoken');
 require("dotenv").config();
 
+import AWS from 'aws-sdk';
 
+const awsConfig = {
+    accessKeyId:process.env.AWS_ACCESS_KEY_ID ,
+    secretAccessKey:process.env.AWS_SECRET_ACCESS_KEY ,
+    region: process.env.AWS_REGION,
+    apiVersion:process.env.AWS_API_VERSION
+};
 
-
+const SES = new AWS.SES(awsConfig);
 
 const register = async (req, res) => {
     try{
@@ -171,11 +178,46 @@ const refreshToken = async (req, res) => {
 
 }
 
+const sentTestEmail = async (req, res) => {
+    const params = {
+        Source: process.env.EMAIL_FROM,
+        Destination: {
+            ToAddresses: ["grfemerling@gmail.com"],
+        },
+        ReplyToAddresses: [process.env.EMAIL_FROM],
+        Message: {
+            Body: {
+                Html:{
+                    Charset: "UTF-8",
+                    Data: `<html>
+                    <h1>Restablecer Contraseña</h1>
+                    </html>`
+                },
+            },
+            Subject: {
+                Charset: "UTF-8",
+                Data:"Liga para restablecer contraseña"
+            }
+        },
+    };
+
+    const emailSent = SES.sendEmail(params).promise();
+
+    emailSent.then((data) => {
+        console.log(data);
+        res.json({ok: true});
+    })
+        .catch(er => {
+            console.log(er);
+        })
+};
+
 module.exports = {
     register,
     login,
     refreshToken,
     loginB,
     logout,
-    currentUser
+    currentUser,
+    sentTestEmail
 }
