@@ -1,12 +1,10 @@
-const getFilePath = (file) => {
+function getFilePath(file) {
     const filePath = file.path;
-    const fileSplit = filePath.split("/")
+    const fileSplit = filePath.split("\\");
 
-    // Obtiene la ruta relativa a './uploads/profile'
-    const fileRelativePath = fileSplit.slice(-2).join("/");
-
-    return fileRelativePath;
+    return `${fileSplit[1]}/${fileSplit[2]}`;
 }
+
 module.exports = {
-    getFilePath
-}
+    getFilePath,
+};

@@ -7,6 +7,7 @@ const app = express();
 //Import routes
 const authRoutes = require('./router/auth');
 const userRoutes = require('./router/user');
+const courseRoutes = require('./router/course');
 
 
 //Configure body parser
@@ -31,5 +32,8 @@ app.use((req, res, next) => {
 //Configure routes
 app.use(`/api/${process.env.API_VERSION}`, authRoutes);
 app.use(`/api/${process.env.API_VERSION}`, userRoutes);
+app.use(`/api/${process.env.API_VERSION}`, courseRoutes);
+
+
 
 module.exports = app;
