@@ -1,7 +1,7 @@
 const Login = () => {
     return (
         <div className="container mx-auto">
-            <div className="flex justify-center px-6 my-12">
+            <div className="flex justify-center px-6 my-20">
                 <div className="w-full xl:w-3/4 lg:w-11/12 flex">
                     <div
                         className="w-full h-auto bg-gray-400 hidden lg:block lg:w-1/2 bg-cover rounded-l-lg"
@@ -51,7 +51,7 @@ const Login = () => {
                             <div className="text-center">
                                 <a
                                     className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                                    href="#"
+                                    href="./register"
                                 >
                                     Create an Account!
                                 </a>
