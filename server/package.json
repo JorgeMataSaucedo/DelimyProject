@@ -10,6 +10,7 @@
     "dev": "nodemon -r esm server.js"
   },
   "dependencies": {
+    "aws-sdk": "^2.1344.0",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.2",
     "connect-multiparty": "^2.2.0",
