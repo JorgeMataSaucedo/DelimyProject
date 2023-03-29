@@ -103,6 +103,13 @@ api.post(
  *                 course:
  */
 api.get("/courses", CourseController.getCourse);
+api.patch(
+    "/course/:id",
+    [md_upload],
+    CourseController.updateCourse
+);
+api.delete("/course/:id", CourseController.deleteCourse);
+
 
 
 module.exports = api;

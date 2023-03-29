@@ -22,6 +22,39 @@ function createCourse(req, res) {
     });
 }
 
+function updateCourse(req, res) {
+    const { id } = req.params;
+    const courseData = req.body;
+
+    if (req.files.miniature) {
+        const imagePath = req.files.miniature.path.replace(/\\/g, '/');
+        const imagePathWithoutUploads = imagePath.substring('uploads'.length + 1);
+        courseData.miniature = imagePathWithoutUploads;
+        console.log(imagePathWithoutUploads);
+    }
+
+    Course.findByIdAndUpdate({ _id: id }, courseData, (error) => {
+        if (error) {
+            res.status(400).send({ msg: "Error al actualizar el curso" });
+        } else {
+            res.status(200).send({ msg: "Actualizacion correcta" });
+        }
+    });
+}
+
+
+function deleteCourse(req, res) {
+    const { id } = req.params;
+
+    Course.findByIdAndDelete(id, (error) => {
+        if (error) {
+            res.status(400).send({ msg: "Error al eliminar el curso" });
+        } else {
+            res.status(200).send({ msg: "Curso eliminado" });
+        }
+    });
+}
+
 function getCourse(req, res) {
     const { page = 1, limit = 10 } = req.query;
 
@@ -42,4 +75,6 @@ function getCourse(req, res) {
 module.exports = {
     createCourse,
     getCourse,
+    updateCourse,
+    deleteCourse,
 }
